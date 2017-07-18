@@ -134,8 +134,9 @@ def main (args):
 
     errors = Y_test - predicted
     with open ('fig/error' + cur_time +'.txt','w') as f:
-        for item in errors:
-            f.write("%s\n" % item)
+        f.write('Correct\tPredict\n')
+        for i in range (len(Y_test)):
+            f.write(Y_test[i] +'\t' + predicted[i] + '\n')
 
  
     # print ("Plotting")
