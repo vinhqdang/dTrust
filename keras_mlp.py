@@ -14,6 +14,8 @@ from matplotlib import pyplot
 from keras.callbacks import TensorBoard, EarlyStopping, ReduceLROnPlateau
 import datetime
 
+from keras import backend as K
+
 def parse_args():
     '''
     Parses the dTrust arguments.
@@ -44,7 +46,8 @@ def parse_args():
                         help = "Learning rate decay")
     return parser.parse_args()
 
-
+def root_mean_squared_error(y_true, y_pred):
+    return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1)) 
 
 def main (args):
     # load dataset
@@ -110,7 +113,7 @@ def main (args):
 
     # Model is derived and compiled using mean square error as loss
     # function, accuracy as metric and gradient descent optimizer.
-    model.compile(loss='mse', optimizer='adam', metrics=["mae","mse"], optimizer = adam)
+    model.compile(loss='mse', optimizer='adam', metrics=["mae","mse", root_mean_squared_error], optimizer = adam)
      
     print ("Training")
     # Training model with train data. Fixed random seed:
@@ -124,6 +127,13 @@ def main (args):
     # actual data to verify visually the accuracy of the model.
     pyplot.plot(predicted, color="blue")
     pyplot.plot(Y_test, color="green")
+    pyplot.show()
+
+    # Plot histogram of error
+    pyplot.hist(Y_test - predicted, 1, normed=1, facecolor='green', alpha=0.75)
+    pyplot.xlabel('Prediction Error')
+    pyplot.ylabel('Probability')
+    pyplot.grid(True)
     pyplot.show()
 
 if __name__ == "__main__":
