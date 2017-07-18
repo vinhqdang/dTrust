@@ -11,6 +11,8 @@ from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from matplotlib import pyplot
+from keras.callbacks import TensorBoard
+import datetime
 
 def parse_args():
     '''
@@ -91,11 +93,15 @@ def main (args):
     # Model is derived and compiled using mean square error as loss
     # function, accuracy as metric and gradient descent optimizer.
     model.compile(loss='mse', optimizer='adam', metrics=["mae","mse"])
+
+    # tensorboard
+    tensorboard = TensorBoard(log_dir='./logs_' + datetime.datetime.now().strftime("%Y%m%d_%H_%M_%S"), histogram_freq=0,
+                          write_graph=True, write_images=False)
      
     print ("Training")
     # Training model with train data. Fixed random seed:
     numpy.random.seed(3)
-    model.fit(X_train, Y_train, epochs = args.epochs, batch_size = args.batch_size, verbose=args.verbose)
+    model.fit(X_train, Y_train, epochs = args.epochs, batch_size = args.batch_size, verbose=args.verbose, callbacks=[tensorboard])
 
     print ("Predict")
     predicted = model.predict(X_test)
