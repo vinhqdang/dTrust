@@ -105,8 +105,8 @@ def main (args):
     # callbacks
     tensorboard = TensorBoard(log_dir='./logs_' + datetime.datetime.now().strftime("%Y%m%d_%H_%M_%S"), histogram_freq=0,
                           write_graph=True, write_images=False)
-    earlystopping = EarlyStopping(monitor = 'root_mean_squared_error', min_delta = args.min_delta, patience = args.patience, verbose = args.verbose)
-    reduce_lr = ReduceLROnPlateau(monitor='mse', factor=args.min_delta*0.75,
+    earlystopping = EarlyStopping(monitor = 'mean_squared_error', min_delta = args.min_delta, patience = args.patience, verbose = args.verbose)
+    reduce_lr = ReduceLROnPlateau(monitor='mean_squared_error', factor=args.min_delta*0.75,
               patience=5, min_lr=0.0001)
 
     # optimizer
