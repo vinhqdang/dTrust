@@ -11,7 +11,7 @@ from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from matplotlib import pyplot
-from keras.callbacks import TensorBoard
+from keras.callbacks import TensorBoard, EarlyStopping
 import datetime
 
 def parse_args():
@@ -34,6 +34,10 @@ def parse_args():
                         help = "Batch size")
     parser.add_argument('--verbose', type = int, nargs='?', default=2,
                         help = "Verbose level. From 0 to 2.")
+    parser.add_argument('--min_delta', type = float, nargs='?', default=0.1,
+                        help = "Min delta using in early stopping. If the model cannot improve more than min_delta, there is no improvement.")
+    parser.add_argument('--patience', type = float, nargs='?', default=5,
+                        help = "For early stopping. Is number of epochs wait for the model to improve.")
     return parser.parse_args()
 
 
@@ -97,11 +101,12 @@ def main (args):
     # tensorboard
     tensorboard = TensorBoard(log_dir='./logs_' + datetime.datetime.now().strftime("%Y%m%d_%H_%M_%S"), histogram_freq=0,
                           write_graph=True, write_images=False)
+    earlystopping = EarlyStopping(monitor = 'mse', min_delta = args.min_delta, patience = args.patience, verbose = args.verbose)
      
     print ("Training")
     # Training model with train data. Fixed random seed:
     numpy.random.seed(3)
-    model.fit(X_train, Y_train, epochs = args.epochs, batch_size = args.batch_size, verbose=args.verbose, callbacks=[tensorboard])
+    model.fit(X_train, Y_train, epochs = args.epochs, batch_size = args.batch_size, verbose=args.verbose, callbacks=[tensorboard,earlystopping])
 
     print ("Predict")
     predicted = model.predict(X_test)
