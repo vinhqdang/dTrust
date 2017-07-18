@@ -3,6 +3,7 @@ import argparse
 import numpy
 import pandas
 import keras
+import sklearn
 from keras.models import Sequential
 # from keras.layers import Dense
 from keras.layers.core import Dense, Activation, Dropout
