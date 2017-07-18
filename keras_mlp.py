@@ -125,20 +125,32 @@ def main (args):
 
     print ("Predict")
     predicted = model.predict(X_test)
- 
-    print ("Plotting")
-    # Plot in blue color the predicted adata and in green color the
-    # actual data to verify visually the accuracy of the model.
-    pyplot.plot(predicted, color="blue")
-    pyplot.plot(Y_test, color="green")
-    pyplot.savefig ("fig/" + "compare" + cur_time + ".png")
 
-    # Plot histogram of error
-    pyplot.hist(Y_test - predicted, 1, normed=1, facecolor='green', alpha=0.75)
-    pyplot.xlabel('Prediction Error')
-    pyplot.ylabel('Probability')
-    pyplot.grid(True)
-    pyplot.savefig ("fig/" + "error_dist" + cur_time + ".png")
+    rmse = sqrt (sklearn.metrics.mean_squared_error(y_true = Y_test, y_pred = predicted))
+    print ("Test: RMSE = " + str(rmse))
+
+    mae = sklearn.metrics.mean_absolute_error(y_true = Y_test, y_pred = predicted)
+    print ("Test: MAE = " + str(mae))
+
+    errors = Y_test - predicted
+    with open ('fig/error' + cur_time +'.txt','w') as f:
+        for item in errors:
+            f.write("%s\n" % item)
+
+ 
+    # print ("Plotting")
+    # # Plot in blue color the predicted adata and in green color the
+    # # actual data to verify visually the accuracy of the model.
+    # pyplot.plot(predicted, color="blue")
+    # pyplot.plot(Y_test, color="green")
+    # pyplot.savefig ("fig/" + "compare" + cur_time + ".png")
+
+    # # Plot histogram of error
+    # pyplot.hist(Y_test - predicted, 1, normed=1, facecolor='green', alpha=0.75)
+    # pyplot.xlabel('Prediction Error')
+    # pyplot.ylabel('Probability')
+    # pyplot.grid(True)
+    # pyplot.savefig ("fig/" + "error_dist" + cur_time + ".png")
 
 if __name__ == "__main__":
     args = parse_args()
