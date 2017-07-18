@@ -3,7 +3,7 @@ import argparse
 import numpy
 import pandas
 from keras.models import Sequential
-from keras.layers import Dense
+# from keras.layers import Dense
 from keras.layers.core import Dense, Activation, Dropout
 from keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.model_selection import cross_val_score
