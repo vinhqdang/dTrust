@@ -16,6 +16,7 @@ from keras.callbacks import TensorBoard, EarlyStopping, ReduceLROnPlateau
 import datetime
 
 from keras import backend as K
+import math
 
 def parse_args():
     '''
@@ -126,7 +127,7 @@ def main (args):
     print ("Predict")
     predicted = model.predict(X_test)
 
-    rmse = sqrt (sklearn.metrics.mean_squared_error(y_true = Y_test, y_pred = predicted))
+    rmse = math.sqrt (sklearn.metrics.mean_squared_error(y_true = Y_test, y_pred = predicted))
     print ("Test: RMSE = " + str(rmse))
 
     mae = sklearn.metrics.mean_absolute_error(y_true = Y_test, y_pred = predicted)
