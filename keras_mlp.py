@@ -126,6 +126,7 @@ def main (args):
     print ("Predict")
     predicted = model.predict(X_test)
  
+    print ("Plotting")
     # Plot in blue color the predicted adata and in green color the
     # actual data to verify visually the accuracy of the model.
     pyplot.plot(predicted, color="blue")
