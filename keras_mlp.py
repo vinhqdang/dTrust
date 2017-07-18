@@ -2,6 +2,7 @@ import argparse
 
 import numpy
 import pandas
+import keras
 from keras.models import Sequential
 # from keras.layers import Dense
 from keras.layers.core import Dense, Activation, Dropout
@@ -113,7 +114,7 @@ def main (args):
 
     # Model is derived and compiled using mean square error as loss
     # function, accuracy as metric and gradient descent optimizer.
-    model.compile(loss='mse', optimizer='adam', metrics=["mae","mse", root_mean_squared_error], optimizer = adam)
+    model.compile(loss='mse', metrics=["mae","mse", root_mean_squared_error], optimizer = adam)
      
     print ("Training")
     # Training model with train data. Fixed random seed:
