@@ -105,7 +105,7 @@ def main (args):
     cur_time = datetime.datetime.now().strftime("%Y%m%d_%H_%M_%S")
 
     # callbacks
-    tensorboard = TensorBoard(log_dir='./logs_' + cur_time, histogram_freq=0,
+    tensorboard = TensorBoard(log_dir='.logs/log_' + cur_time, histogram_freq=0,
                           write_graph=True, write_images=False)
     earlystopping = EarlyStopping(monitor = 'mean_squared_error', min_delta = args.min_delta, patience = args.patience, verbose = args.verbose)
     reduce_lr = ReduceLROnPlateau(monitor='mean_squared_error', factor=args.min_delta*0.75,
