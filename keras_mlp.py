@@ -128,17 +128,19 @@ def main (args):
     print ("Predict")
     predicted = model.predict(X_test)
 
-    rmse = math.sqrt (sklearn.metrics.mean_squared_error(y_true = Y_test, y_pred = predicted))
+    y_test = Y_test['rating'].tolist()
+
+    rmse = math.sqrt (sklearn.metrics.mean_squared_error(y_true = y_test, y_pred = predicted))
     print ("Test: RMSE = " + str(rmse))
 
-    mae = sklearn.metrics.mean_absolute_error(y_true = Y_test, y_pred = predicted)
+    mae = sklearn.metrics.mean_absolute_error(y_true = y_test, y_pred = predicted)
     print ("Test: MAE = " + str(mae))
 
     errors = Y_test - predicted
     with open ('fig/error' + cur_time +'.txt','w') as f:
         f.write('Correct\tPredict\n')
-        for i in range (len(Y_test)):
-            f.write(str(Y_test[i]) +'\t' + str(predicted[i]) + '\n')
+        for i in range (len(y_test)):
+            f.write(str(y_test[i]) +'\t' + str(predicted[i]) + '\n')
 
  
     # print ("Plotting")
