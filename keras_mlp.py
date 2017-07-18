@@ -74,7 +74,7 @@ def main (args):
     elif (len(layers) > len(dropouts)):
         print ("Too many layer without dropout. Auto fill out.")
         k = len(layers) - len (dropouts)
-        for (i in range(k)):
+        for i in range(k):
             dropouts.append (dropouts[-1])
 
     for i in range(len(layers)):
