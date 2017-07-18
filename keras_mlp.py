@@ -37,7 +37,7 @@ def parse_args():
                         help = "Batch size")
     parser.add_argument('--verbose', type = int, nargs='?', default=2,
                         help = "Verbose level. From 0 to 2.")
-    parser.add_argument('--min_delta', type = float, nargs='?', default=0.05,
+    parser.add_argument('--min_delta', type = float, nargs='?', default=0.02,
                         help = "Min delta using in early stopping. If the model cannot improve more than min_delta, there is no improvement.")
     parser.add_argument('--patience', type = float, nargs='?', default=5,
                         help = "For early stopping. Is number of epochs wait for the model to improve.")
