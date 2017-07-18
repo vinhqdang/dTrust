@@ -60,8 +60,8 @@ def main (args):
 
     # divide train and test
     print ("Divide data")
-    trust = dataframe.loc[dataframe['Type'] == 'Rating']
-    rating = dataframe.loc[dataframe['Type'] == 'Trust']
+    trust = dataframe.loc[dataframe['Type'] == 'Trust']
+    rating = dataframe.loc[dataframe['Type'] == 'Rating']
     
     train_rating = rating.sample (frac = 0.8)
     test_rating = rating.drop (train_rating.index)
