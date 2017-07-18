@@ -37,7 +37,7 @@ def parse_args():
                         help = "Batch size")
     parser.add_argument('--verbose', type = int, nargs='?', default=2,
                         help = "Verbose level. From 0 to 2.")
-    parser.add_argument('--min_delta', type = float, nargs='?', default=0.1,
+    parser.add_argument('--min_delta', type = float, nargs='?', default=0.05,
                         help = "Min delta using in early stopping. If the model cannot improve more than min_delta, there is no improvement.")
     parser.add_argument('--patience', type = float, nargs='?', default=5,
                         help = "For early stopping. Is number of epochs wait for the model to improve.")
@@ -105,7 +105,7 @@ def main (args):
     # callbacks
     tensorboard = TensorBoard(log_dir='./logs_' + datetime.datetime.now().strftime("%Y%m%d_%H_%M_%S"), histogram_freq=0,
                           write_graph=True, write_images=False)
-    earlystopping = EarlyStopping(monitor = 'mse', min_delta = args.min_delta, patience = args.patience, verbose = args.verbose)
+    earlystopping = EarlyStopping(monitor = 'root_mean_squared_error', min_delta = args.min_delta, patience = args.patience, verbose = args.verbose)
     reduce_lr = ReduceLROnPlateau(monitor='mse', factor=args.min_delta*0.75,
               patience=5, min_lr=0.0001)
 
