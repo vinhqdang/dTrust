@@ -138,7 +138,7 @@ def main (args):
     with open ('fig/error' + cur_time +'.txt','w') as f:
         f.write('Correct\tPredict\n')
         for i in range (len(Y_test)):
-            f.write(Y_test[i] +'\t' + predicted[i] + '\n')
+            f.write(str(Y_test[i]) +'\t' + str(predicted[i]) + '\n')
 
  
     # print ("Plotting")
