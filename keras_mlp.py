@@ -11,7 +11,7 @@ from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from matplotlib import pyplot
-from keras.callbacks import TensorBoard, EarlyStopping
+from keras.callbacks import TensorBoard, EarlyStopping, ReduceLROnPlateau
 import datetime
 
 def parse_args():
@@ -38,6 +38,10 @@ def parse_args():
                         help = "Min delta using in early stopping. If the model cannot improve more than min_delta, there is no improvement.")
     parser.add_argument('--patience', type = float, nargs='?', default=5,
                         help = "For early stopping. Is number of epochs wait for the model to improve.")
+    parser.add_argument('--lr', type = float, nargs='?', default=0.005,
+                        help = "Learning rate")
+    parser.add_argument('--lr_decay', type = float, nargs='?', default=0.00,
+                        help = "Learning rate decay")
     return parser.parse_args()
 
 
@@ -93,20 +97,25 @@ def main (args):
             model.add(Dropout(dropouts[i]))
             model.add(Activation("linear"))
     model.add(Dense(1))
-     
-    # Model is derived and compiled using mean square error as loss
-    # function, accuracy as metric and gradient descent optimizer.
-    model.compile(loss='mse', optimizer='adam', metrics=["mae","mse"])
 
-    # tensorboard
+    # callbacks
     tensorboard = TensorBoard(log_dir='./logs_' + datetime.datetime.now().strftime("%Y%m%d_%H_%M_%S"), histogram_freq=0,
                           write_graph=True, write_images=False)
     earlystopping = EarlyStopping(monitor = 'mse', min_delta = args.min_delta, patience = args.patience, verbose = args.verbose)
+    reduce_lr = ReduceLROnPlateau(monitor='mse', factor=args.min_delta*0.75,
+              patience=5, min_lr=0.0001)
+
+    # optimizer
+    adam = keras.optimizers.Adam (lr = args.lr, decay = args.lr_decay)
+
+    # Model is derived and compiled using mean square error as loss
+    # function, accuracy as metric and gradient descent optimizer.
+    model.compile(loss='mse', optimizer='adam', metrics=["mae","mse"], optimizer = adam)
      
     print ("Training")
     # Training model with train data. Fixed random seed:
     numpy.random.seed(3)
-    model.fit(X_train, Y_train, epochs = args.epochs, batch_size = args.batch_size, verbose=args.verbose, callbacks=[tensorboard,earlystopping])
+    model.fit(X_train, Y_train, epochs = args.epochs, batch_size = args.batch_size, verbose=args.verbose, callbacks=[tensorboard,earlystopping,reduce_lr])
 
     print ("Predict")
     predicted = model.predict(X_test)
