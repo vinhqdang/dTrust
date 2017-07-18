@@ -128,7 +128,7 @@ def main (args):
     print ("Predict")
     predicted = model.predict(X_test)
 
-    y_test = Y_test['rating'].tolist()
+    y_test = Y_test[:,0].tolist()
 
     rmse = math.sqrt (sklearn.metrics.mean_squared_error(y_true = y_test, y_pred = predicted))
     print ("Test: RMSE = " + str(rmse))
