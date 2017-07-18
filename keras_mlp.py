@@ -102,8 +102,10 @@ def main (args):
             model.add(Activation("linear"))
     model.add(Dense(1))
 
+    cur_time = datetime.datetime.now().strftime("%Y%m%d_%H_%M_%S")
+
     # callbacks
-    tensorboard = TensorBoard(log_dir='./logs_' + datetime.datetime.now().strftime("%Y%m%d_%H_%M_%S"), histogram_freq=0,
+    tensorboard = TensorBoard(log_dir='./logs_' + cur_time, histogram_freq=0,
                           write_graph=True, write_images=False)
     earlystopping = EarlyStopping(monitor = 'mean_squared_error', min_delta = args.min_delta, patience = args.patience, verbose = args.verbose)
     reduce_lr = ReduceLROnPlateau(monitor='mean_squared_error', factor=args.min_delta*0.75,
@@ -128,14 +130,14 @@ def main (args):
     # actual data to verify visually the accuracy of the model.
     pyplot.plot(predicted, color="blue")
     pyplot.plot(Y_test, color="green")
-    pyplot.show()
+    pyplot.savefig ("fig/" + "compare" + cur_time + ".png")
 
     # Plot histogram of error
     pyplot.hist(Y_test - predicted, 1, normed=1, facecolor='green', alpha=0.75)
     pyplot.xlabel('Prediction Error')
     pyplot.ylabel('Probability')
     pyplot.grid(True)
-    pyplot.show()
+    pyplot.savefig ("fig/" + "error_dist" + cur_time + ".png")
 
 if __name__ == "__main__":
     args = parse_args()
