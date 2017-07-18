@@ -74,10 +74,10 @@ def main (args):
     elif (len(layers) > len(dropouts)):
         print ("Too many layer without dropout. Auto fill out.")
         k = len(layers) - len (dropouts)
-        for (i in 1:k):
+        for (i in range(k)):
             dropouts.append (dropouts[-1])
 
-    for i in len(layers):
+    for i in range(len(layers)):
         if i == 0:
             model.add(Dense(layers[i], input_dim=3, activation = args.activation))
             model.add(Dropout(dropouts[i]))
