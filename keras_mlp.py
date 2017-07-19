@@ -136,7 +136,7 @@ def main (args):
     mae = sklearn.metrics.mean_absolute_error(y_true = y_test, y_pred = predicted)
     print ("Test: MAE = " + str(mae))
 
-    errors = Y_test - predicted
+    errors = y_test - predicted
     with open ('fig/error' + cur_time +'.txt','w') as f:
         f.write('Correct\tPredict\n')
         for i in range (len(y_test)):
