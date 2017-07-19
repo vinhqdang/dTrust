@@ -123,7 +123,8 @@ def main (args):
     print ("Training")
     # Training model with train data. Fixed random seed:
     numpy.random.seed(3)
-    model.fit(X_train, Y_train, epochs = args.epochs, batch_size = args.batch_size, verbose=args.verbose, callbacks=[tensorboard,earlystopping,reduce_lr])
+    model.fit(X_train, Y_train, epochs = args.epochs, batch_size = args.batch_size, verbose=args.verbose, callbacks=[tensorboard,earlystopping,reduce_lr],
+        validation_data = (X_test, Y_test))
 
     print ("Predict")
     predicted = model.predict(X_test)
