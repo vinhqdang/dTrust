@@ -245,6 +245,12 @@ perform_learning = function (total_df,
     
     rmse_value = sqrt(dnn@model$validation_metrics@metrics$MSE)
     
+    # predict all data
+    p_all = h2o.predict(dnn, newdata = test)
+    errors <- as.vector(test$Rating) - as.vector(p_all)
+    write.table(errors, file = paste("error_" + length(hiddens) + "_layers.txt"), 
+                row.names = FALSE, col.names = FALSE)
+    
     # print (ci.rmsea(rmsea = rmse_value, df = nrow(test_rating) - 1, N = nrow(test_rating)))
     
     print (rmse_value) # 1.026661
@@ -371,12 +377,13 @@ multi_hist3 <- function (x1, x2, x3,
   max_value = max (max(x1), max(x2), max(x3))
   min_value = min (min(x1), min(x2), min(x3))
   
-  x_range = seq (min_value - 0.5, max_value + 0.5, 0.2)
+  # x_range = seq (min_value - 0.5, max_value + 0.5, 0.2)
+  x_range = seq(0.5,5.5,0.2)
   
   # shift the data so they won't overlap
-  x1 = x1-0.3
-  x2 = x2-0.1
-  x3 = x3+0.1
+  x1 = x1-0.2
+  x2 = x2-0.0
+  x3 = x3+0.2
   
   library(ggplot2)
   dat1 = data.frame(x=x1, dataset=group1)
@@ -393,10 +400,12 @@ multi_hist3 <- function (x1, x2, x3,
                    position="identity", lwd=0.2) +
     ggtitle("") +
     scale_y_continuous(labels=percent_format()) +
-    ylab("Frequency") + xlab(xlab_text) +
+    ylab("") + xlab(xlab_text) +
     theme(axis.text=element_text(size=14),
           axis.title=element_text(size=16,face="bold"),
-          legend.text=element_text(size=16)) 
+          legend.text=element_text(size=16)) +
+    scale_fill_grey(start = 0, end = .9) +  # for gray color instead of solid color
+    theme_bw()       # for white background
 }
 
 # process Massa dataset
