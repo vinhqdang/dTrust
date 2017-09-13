@@ -248,7 +248,7 @@ perform_learning = function (total_df,
     # predict all data
     p_all = h2o.predict(dnn, newdata = as.h2o(test))
     errors <- as.vector(test$Rating) - as.vector(p_all)
-    write.table(errors, file = paste("error_",length(hiddens), "_layers.txt"), 
+    write.table(errors, file = paste("error_",length(hiddens), "_layers.txt", sep = ""), 
                 row.names = FALSE, col.names = FALSE)
     
     # print (ci.rmsea(rmsea = rmse_value, df = nrow(test_rating) - 1, N = nrow(test_rating)))
