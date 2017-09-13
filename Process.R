@@ -246,7 +246,7 @@ perform_learning = function (total_df,
     rmse_value = sqrt(dnn@model$validation_metrics@metrics$MSE)
     
     # predict all data
-    p_all = h2o.predict(dnn, newdata = test)
+    p_all = h2o.predict(dnn, newdata = as.h2o(test))
     errors <- as.vector(test$Rating) - as.vector(p_all)
     write.table(errors, file = paste("error_" + length(hiddens) + "_layers.txt"), 
                 row.names = FALSE, col.names = FALSE)
