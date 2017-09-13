@@ -445,9 +445,9 @@ mean_baseline = function (rating_data, item_id) {
 run_mult_layers <- function()
 {
   for (i in 1:3) {
-    h = c(512) 
-    if (i==2) {h=c(512,256)}
-    if (i==3) {h=c(512,256,128)}
+    h = c(256) 
+    if (i==2) {h=c(256,128)}
+    if (i==3) {h=c(256,128,64)}
     rate_trust_prediction(hiddens = h)
   }
 }
